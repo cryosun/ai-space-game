@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>COSMIC ARENA — сетевая космическая арена</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#128760;</text></svg>" />
+</head>
+<body>
+
+<canvas id="game"></canvas>
+
+<!-- ============ HUD ============ -->
+<div id="hud" class="hidden">
+
+  <div class="hud-top">
+    <div class="badge" id="modeBadge">КАЖДЫЙ САМ ЗА СЕБЯ</div>
+    <div class="badge wave" id="waveBadge">ВОЛНА 0</div>
+    <div class="spacer"></div>
+    <div class="mode-switch" id="modeSwitch">
+      <button data-mode="ffa" class="mbtn">FFA</button>
+      <button data-mode="survival" class="mbtn">ВЫЖИВАНИЕ</button>
+    </div>
+    <button class="icon-btn" id="muteBtn" title="Звук (M)">🔊</button>
+  </div>
+
+  <div class="panel leaderboard" id="leaderboard">
+    <div class="panel-title">ТАБЛИЦА ЛИДЕРОВ <span class="hint">[Tab]</span></div>
+    <div class="lb-body" id="lbBody"></div>
+  </div>
+
+  <canvas id="minimap" width="200" height="150"></canvas>
+
+  <div class="killfeed" id="killfeed"></div>
+
+  <div class="announce-wrap" id="announceWrap"></div>
+
+  <div class="vitals" id="vitals">
+    <div class="bar hp"><div class="fill" id="hpFill"></div><span id="hpText">100</span></div>
+    <div class="bar sh"><div class="fill" id="shFill"></div><span id="shText">100</span></div>
+    <div class="dash-wrap">
+      <div class="dash-cd" id="dashCd"></div>
+      <span>DASH</span>
+    </div>
+    <div class="buff-row" id="buffRow"></div>
+  </div>
+
+  <div class="wave-overlay hidden" id="waveOverlay">
+    <div class="wave-title" id="waveTitle">ВОЛНА 1</div>
+    <div class="wave-sub" id="waveSub">Передышка 5 сек</div>
+  </div>
+
+  <div class="respawn-overlay hidden" id="respawnOverlay">
+    <div class="rs-title">УНИЧТОЖЕН</div>
+    <div class="rs-timer" id="rsTimer">3</div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<!-- ============ ЭКРАН ВХОДА ============ -->
+<div id="screen">
+  <div class="stars"></div>
+  <div class="login glass">
+    <h1 class="logo">COSMIC<span>ARENA</span></h1>
+    <p class="tagline">Многопользовательский космический шутер · LAN / по IP</p>
+
+    <label class="field">
+      <span>Позывной</span>
+      <input id="nickInput" maxlength="16" placeholder="Введите никнейм" autocomplete="off" />
+    </label>
+
+    <div class="field">
+      <span>Корабль</span>
+      <div class="ship-grid" id="shipGrid"></div>
+    </div>
+
+    <div class="field">
+      <span>Цвет корпуса</span>
+      <div class="color-grid" id="colorGrid"></div>
+    </div>
+
+    <button id="playBtn" class="play-btn">ВОЙТИ НА АРЕНУ</button>
+
+    <div class="login-foot">
+      <button id="statsBtn" class="link-btn">📊 Статистика игроков</button>
+      <span class="dot">·</span>
+      <span>Хост задаёт режим, остальные голосуют</span>
+    </div>
+  </div>
+
+  <div class="controls glass">
+    <div class="controls-title">УПРАВЛЕНИЕ</div>
+    <div class="ctrl-row"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> / <kbd>←↑↓→</kbd><span>движение (инерция)</span></div>
+    <div class="ctrl-row"><kbd>Мышь</kbd><span>прицел — нос плавно доворачивается</span></div>
+    <div class="ctrl-row"><kbd>ЛКМ</kbd><span>огонь</span></div>
+    <div class="ctrl-row"><kbd>Space</kbd> / <kbd>ПКМ</kbd><span>рывок (dash) + неуязвимость · КД 3 с</span></div>
+    <div class="ctrl-row"><kbd>Tab</kbd><span>полная таблица лидеров</span></div>
+    <div class="ctrl-row"><kbd>M</kbd><span>вкл/выкл звук</span></div>
+  </div>
+
+  <div class="stats-panel glass hidden" id="statsPanel">
+    <div class="controls-title">ОБЩАЯ СТАТИСТИКА <button id="statsClose" class="x-btn">✕</button></div>
+    <div class="table-scroll">
+      <table id="statsTable">
+        <thead>
+          <tr><th>Игрок</th><th>Убийства</th><th>Боты</th><th>Смерти</th><th>K/D</th><th>Точность</th><th>Урон</th><th>Макс. волна</th><th>Титул</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="stats-empty" id="statsEmpty">Пока нет данных — сыграйте матч.</div>
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="sound.js"></script>
+<script src="game.js"></script>
+</body>
+</html>

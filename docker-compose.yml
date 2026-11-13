@@ -1,0 +1,18 @@
+# Запуск в одну команду: docker compose up -d
+# Игра будет доступна на http://<IP-машины>:3000
+services:
+  arena:
+    build: .
+    container_name: cosmic-arena
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: "3000"
+      # Статистика живёт в томе и не теряется при пересборке контейнера
+      STATS_FILE: /data/stats.json
+    volumes:
+      - arena_data:/data
+
+volumes:
+  arena_data:

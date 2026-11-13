@@ -1,0 +1,17 @@
+{
+  "name": "cosmic-arena",
+  "version": "1.0.0",
+  "description": "Multiplayer top-down space shooter (LAN) with an authoritative Node.js + Socket.io server",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5"
+  }
+}
